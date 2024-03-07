@@ -11,6 +11,13 @@ run-name: GitHub Action Deploy to Tomcat
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      host:
+        required: true
+      user:
+        required: true
+      password:
+        required: true
 
 env:
   mavenGoal: "clean install"
@@ -23,6 +30,7 @@ jobs:
          name: buildArtifact
      - name: Production Deployment
        run: |
+          echo ${{ secrets.host }}
           mv java-example.war Vasu.war
           ls -lart 
      - name: scp ssh pipelines
@@ -30,9 +38,9 @@ jobs:
        env:
          LASTSSH: "Doing something after copying"
        with:
-         host: ${{ secrets.DC_HOST }}
-         user: ${{ secrets.DC_USER }}
-         pass: ${{ secrets.DC_KEY }}
+         host: ${{ secrets.host }}
+         user: ${{ secrets.user }}
+         pass: ${{ secrets.password }}
          scp: |
           ./*.war => /tmp/
          last_ssh: |
