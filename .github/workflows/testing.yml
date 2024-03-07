@@ -1,0 +1,17 @@
+name: Python Reusable Workflow
+run-name: GitHub Action Maven Reusable Workflow
+on:
+  workflow_dispatch:
+  workflow_call:
+jobs:
+  Test-Workflow:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout tools repo
+      uses: actions/checkout@v4
+      with:
+        repository: vasusheoran/python-testing
+        path: test
+    - name: Invoke Python script
+      run: python -m unittest discover
+      working-directory: test/example-py-unittest/
